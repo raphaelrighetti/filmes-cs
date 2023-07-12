@@ -1,0 +1,5 @@
+ASP.NET é uma tecnologia da Microsoft utilizada no desenvolvimento de aplicações web, ou seja, APIs REST, sistemas completos com server-side rendering utilizando o Razor e etc.
+
+============RESTful============
+
+Dizemos que uma API é RESTful quando ela está completamente de acordo com o padrão de arquitetura REST, seguindo todas as boas práticas e tudo mais.
