@@ -1,6 +1,6 @@
 # Filmes API
 
-"Filmes" é uma API que desenvolvida ao longo dos cursos da formação "ASP.Net Core: crie aplicações com C#, .NET, Entity Framework e LINQ" da Alura, com objetivo de aprender a utilizar o ASP.NET para a criação aplicações web. É uma API que irá funcionar como um catálogo de filmes, com todo um CRUD e etc.
+"Filmes" é uma API desenvolvida ao longo dos cursos da formação "ASP.Net Core: crie aplicações com C#, .NET, Entity Framework e LINQ" da Alura, com objetivo de aprender a utilizar o ASP.NET para a criação aplicações web. É uma API que irá funcionar como um catálogo de filmes, com todo um CRUD e etc.
 
 Também irei registrar o meu progresso no curso neste README, mostrando o que aprendi nas aulas e destacando os pontos mais importantes.
 
