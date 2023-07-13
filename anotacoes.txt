@@ -3,3 +3,49 @@ ASP.NET é uma tecnologia da Microsoft utilizada no desenvolvimento de aplicaç�
 ============RESTful============
 
 Dizemos que uma API é RESTful quando ela está completamente de acordo com o padrão de arquitetura REST, seguindo todas as boas práticas e tudo mais.
+
+============CONTROLLERS============
+
+Os parâmetros que recebemos por meio do corpo da requisição em um método de um controlador já são, por padrão, esperados como JSON e convertidos para o tipo que estamos recebendo no método, assim como no Spring.
+
+============[ApiController]============
+
+Annotation do ASP.NET que transforma a nossa classe em questão em um controlador da API.
+
+============[Route("[controller]")============
+
+Annotation que define a rota que aquele controlador estará escutando.
+
+Quando utilizamos o "[controller]" como rota, a rota será a parte do nome da nossa classe que fica atrás do sufixo "Controller".
+
+============ControllerBase============
+
+É a classe base dos controladores que não dão suporte a nenhum View.
+
+Possui um monte de coisa.
+
+============appsettings.json============
+
+É o arquivo onde definimos algumas configurações do nosso projeto, como os hosts que têm acesso permitido à nossa API, algumas definições dos logs gerados e etc.
+
+============launchSettings.json============
+
+É o arquivo onde definimos algumas configurações de inicialização do nosso projeto, funcionando de forma parecida com o arquivo "application.properties" do Spring.
+
+============[HttpGet], [HttpPost]...============
+
+São annotations que colocamos sobre os métodos para definir qual é o método HTTP que eles irão responder.
+
+============[FromBody]============
+
+Annotation que funciona exatamente da mesma forma que a "@RequestBody" do SpringWeb.
+
+Nos permite definir que um parâmetro de um método do controlador virá do corpo da requisição.
+
+============System.ComponentModel.DataAnnotations============
+
+É o namespace que contém as annotations de validação de objetos, como a "[Required]", a "[MaxLength]", a "[Range]" e por aí vai.
+
+Em todas as annotations de validação podemos passar o parâmetro "ErrorMessage =", que faz com que a mensagem de erro seja a string que passamos nesse parâmetro.
+
+Quando utilizamos essas annotations e algum valor vem errado na requisição, essa verificação já é feita automaticamente devolvendo uma resposta HTTP padronizada.
