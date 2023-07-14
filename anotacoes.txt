@@ -42,6 +42,20 @@ Annotation que funciona exatamente da mesma forma que a "@RequestBody" do Spring
 
 Nos permite definir que um parâmetro de um método do controlador virá do corpo da requisição.
 
+============[FromQuery]============
+
+Utilizamos para pegar um parâmetro que é mandado na query string da URL.
+
+Pode ter valores padrão que serão utilizados caso nenhum valor seja passado.
+
+============PAGINAÇÃO============
+
+Podemos fazer uma espécie de paginação utilizando os próprios métodos "Skip()" e "Take()" de IEnumerable.
+
+Você define quantos itens devem ser pulados e quantos você quer pegar a partir do item após o último pulado.
+
+É interessante que podemos fazer uma lógica onde o usuário passa a página e nós mesmos calculamos o valor do "Skip()".
+
 ============System.ComponentModel.DataAnnotations============
 
 É o namespace que contém as annotations de validação de objetos, como a "[Required]", a "[MaxLength]", a "[Range]" e por aí vai.
@@ -49,3 +63,47 @@ Nos permite definir que um parâmetro de um método do controlador virá do corp
 Em todas as annotations de validação podemos passar o parâmetro "ErrorMessage =", que faz com que a mensagem de erro seja a string que passamos nesse parâmetro.
 
 Quando utilizamos essas annotations e algum valor vem errado na requisição, essa verificação já é feita automaticamente devolvendo uma resposta HTTP padronizada.
+
+Podemos utilizar estas anotações em parâmetros recebidos nos métodos e etc.
+
+============IEnumerable============
+
+É sempre interessante retornarmos um IEnumerable no lugar de uma List ou alguma outra coleção em método que respondem à requisições GET, pois assim utilizamos o polimorfismo, garantindo que, mesmo que mudemos a implementação utilizada, o método ainda retornará da forma que esperamos.
+
+============[HttpGet({<nome>})]============
+
+Podemos utilizar essa sintaxe para especificar que iremos receber o valor colocado no caminho da URL da requisição para este endpoint.
+
+Isso é muito utilizado para achar recursos a partir de um id ou algo do tipo, funcionando de forma muito similar ao Spring e às rotas do Angular.
+
+Exemplo:
+
+    [HttpGet("{id}")]
+    public Filme? DetalharFilme(int id)
+    {
+        return filmes.FirstOrDefault(filme => filme.Id == id);
+    }
+
+============ACTION============
+
+É o jeito que nomeamos os métodos que respondem à requisições HTTP dos nossos controladores.
+
+============IActionResult============
+
+É a interface base para as respostas HTTP padronizadas no ASP.NET que classes como "NotFoundResult" ou "OkObjectResult" implementam.
+
+É uma boa prática sempre retornarmos uma IActionResult nos nossos controllers, pois assim conseguimos ter as respostas padronizadas do jeito que queremos.
+
+A classe ControllerBase contém métodos que já constroem esses resultados para nós, como o "NotFound()" e o "Ok(<objeto>)", que podemos utilizar diretamente dentro do nosso controller.
+
+============CreatedAtAction()============
+
+É um método de ControllerBase que nos retorna um CreatedAtActionResult, que devemos utilizar em respostas com status code "201 Created".
+
+Recebe três parâmetros:
+
+    1. Nome do método que dá acesso ao recurso criado (sempre boa prática utilizar o "nameof()" passando o método).
+    2. Objeto anônimo contendo um campo com o mesmo nome do parâmetro recebido no método que retorna o recurso, como por exemplo um id que é recebido na URL (new { id = <valor do parâmetro> }). Importante ter em mente de que o(s) campo(s) devem ter exatamente o mesmo nome do(s) parâmetro(s) recebidos no método.
+    3. O objeto a ser exibido no corpo da resposta.
+
+Desta forma será gerada uma resposta com status code 201 e com o cabeçalho "Location" exatamente com o caminho até o endpoint que irá retornar o objeto cadastrado.
