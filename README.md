@@ -29,3 +29,11 @@ Nesta aula fiz o meu primeiro controlador, um controlador do endpoint "filme", q
 Além de aprender a criar um controlador utilizando algumas anotações e estendendo a classe "ControllerBase", aprendi a fazer a validação dos campos recebidos no nosso modelo, que no meu caso é o "Filme", utilizando as anotações do namespace "System.ComponentModel.DataAnnotations".
 
 Gostei bastante de como os controladores no ASP.NET funcionam, principalmente por serem muito similares aos controladores do Spring, que já estou acostumado a utilizar. Estou animado para continuar aprendendo.
+
+### Aula 3
+
+#### GET actions
+
+Nesta aula aprendi o que é uma "action" e criei as minhas primeiras actions que respondem à requisições GET recebendo parâmetros por meio da URL, tanto pelo caminho quanto pela query string, e vi que dá para aplicar as mesmas validações que apliquei no meu modelo "Filme" nesses parâmetros. Também apliquei o conceito de paginação no retorno da lista de filmes utilizando os métodos "Skip()" e "Take()", fazendo uma lógica que calcula o valor passado ao "Skip()" dependendo do número da página que o usuário passar no parâmetro "pagina" da URL.
+
+Além disso, aprendi a padronizar as respostas da API utilizando o IActionResult como retorno (quando necessário) e os métodos do ControllerBase que facilitam na construção dessas respostas. Fazendo essa padronização, garantimos que as respostas das nossas actions sempre tenham o status code correto e todas as características necessárias para as possíveis respostas que iremos devolver.

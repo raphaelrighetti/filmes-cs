@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Filmes.Models;
 
@@ -11,6 +12,8 @@ public class Filme
         Duracao = duracao;
     }
 
+    [Range(0, int.MaxValue)]
+    public int Id { get; set; }
     [Required(ErrorMessage = "O título do filme é obrigatório!")]
     [MaxLength(500, ErrorMessage = "O título deve ter no máximo 500 caracteres!")]
     public string Titulo { get; set; }
