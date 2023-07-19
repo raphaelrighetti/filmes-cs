@@ -107,3 +107,105 @@ Recebe três parâmetros:
     3. O objeto a ser exibido no corpo da resposta.
 
 Desta forma será gerada uma resposta com status code 201 e com o cabeçalho "Location" exatamente com o caminho até o endpoint que irá retornar o objeto cadastrado.
+
+============EntityFrameworkCore============
+
+É a biblioteca de ORM do .NET Core e das versões mais recentes do .NET.
+
+============DbContext============
+
+É a classe que estendemos nas nossas classes de acesso a dados. Inclusive, é uma boa prática utilizarmos o sufixo "Context" no final dessas nossas classes.
+
+Essa classe nos ajuda a abstrair todo o código de conexão ao banco que precisaríamos fazer sem usá-la, funcionando de forma parecida com um Repository do Spring ou algo do tipo.
+
+Precisamos receber um "DbContextOptions" no construtor e passá-lo para o construtor da classe base, assim conseguimos injetar as configurações que fizermos no nosso Program.cs quando estivermos adicionando o nosso DbContext nos nossos serviços da aplicação.
+
+============DbSet<>============
+
+É uma classe que representa um conjunto de itens em nosso banco de dados, que podemos utilizar em propriedades do nosso DbContext para retornar esses itens.
+
+============"ConnectionStrings": {}============
+
+É uma propriedade que colocamos no nosso "appsettings.json" que nos permite armazenar strings de conexão com bancos de dados e nomeá-las.
+
+Uma string de conexão é mais ou menos assim:
+
+  "ConnectionStrings": {
+    "FilmesConnection": "server=localhost;database=filmes_api;user=root;password=abc@1234;"
+  }
+
+Podemos acessar essa string de conexão a partir da nossa referência "app" que construímos no Program.cs com o builder da seguinte forma:
+
+    builder.Configuration.GetConnectionString("FilmesConnection");
+
+============ADICIONANDO DbContext À APLICAÇÃO============
+
+Para adicionarmos o DbContext que criamos à nossa aplicação, temos que adicionar um serviço ao nosso "app" no Program.cs.
+
+Para fazer isso, basta utilizarmos o seguinte:
+
+    builder.Services.AddDbContext<FilmeContext>(options =>
+        options.UseMySql(connectionString,
+        ServerVersion.AutoDetect(connectionString)));
+
+Essa lambda que passamos como parâmetro é o que define as nossas opções que recebemos no nosso DbContext que criamos, e devemos utilizar alguma biblioteca específica para o banco de dados que escolhemos utilizar, que foi o MySQL nesse caso. Também conseguimos fazer conexão com um banco sem o uso de uma biblioteca específica, mas essas bibliotecas ajudam bastante, pois elas que criam os métodos como o "UseMySql" que utilizei acima.
+
+Esse "ServerVersion" diz respeito à versão do servidor, mas se colocamos o AutoDetect() com a nossa string de conexão, nem precisamos nos preocupar.
+
+Adicionando o DbContext dessa forma na nossa aplicação, estamos utilizando a injeção de dependências, fazendo com que essa dependência seja passada para todos os recursos que dependam dela para seu funcionamento.
+
+============[Key]============
+
+É uma anotação que define que aquela propriedade do nosso modelo é uma chave daquele modelo, normalmente utilizada em identificadores. Funciona com migrations no banco de dados, tornando o campo com essa anotação a chave primária da tabela criada.
+
+============MIGRATIONS============
+
+Migrations do banco no ASP.NET são classes, não arquivos SQL como no Flyway. Elas estendem a classe "Migration" e sobrescrevem os métodos "Up()" e "Down()", que são utilizados para aplicar a migração e removê-la, respectivamente.
+
+No entanto, raramente vamos ter que escrever essas migrations na mão, pois temos um comando no console do NuGet que nos permite gerar uma migração baseada nos "DbContext" que temos na aplicação. Esse comando é o:
+
+    Add-Migration <nome da migration>
+
+Ele gera automaticamente a nossa migration, respeitando as anotações de validação que colocamos, como [Required], [Key] e etc.
+
+Para conseguir utilizar esse comando, temos que ter a biblioteca "Tools" do EntityFramework, assim como o PowerShell atualizado.
+
+Para aplicar as migrations que fizemos, basta utilizar o comando "Update-Database" no console do NuGet.
+
+============DbContext NO CONTROLLER============
+
+Para utilizarmos o DbContext nos nossos controladores, precisamos utilizar a injeção de dependências, que conseguimos utilizar criando um campo privado do tipo que queremos que seja injetado e criando um construtor pro nosso controlador que recebe o objeto que irá ser usado nessa referência.
+
+Dessa forma já estamos injetando essa dependência e conseguimos utilizar o nosso DbContext nesse controlador.
+
+============OPERAÇÕES NO BANCO COM DbContext============
+
+Para fazermos operações no banco como persistir dados, fazer buscas e etc, podemos utilizar o DbSet que definimos no nosso DbContext como se ele fosse uma List comum, com a única diferença de que os dados vêm do banco e vão para o banco, com o EntityFramework fazendo as queries por baixo dos panos.
+
+Quando fazemos alguma ação que insere ou modifica dados no banco, devemos utilizar o método "SaveChanges()" do DbContext para essas mudanças serem realmente aplicadas.
+
+============AppDomain.CurrentDomain.GetAssemblies()============
+
+Com esse método conseguimos pegar os assemblies do nosso projeto e utilizá-los para adicionar algo a eles ou algo do tipo.
+
+============AutoMapper============
+
+É uma biblioteca utilizada para facilitar o mapeamento de um objeto para outro.
+
+Uma coisa que eu não sabia é que podemos criar vários "Profile" que definem vários mapeamentos e que são utilizados automaticamente sem especificarmos que queremos utilizar eles quando estamos utilizando a injeção de dependências.
+
+Ele faz automaticamente o processo de adicionar nossos profiles nas configurações do nosso mapper sem que tenhamos que fazer nada, apenas criar os profiles.
+
+============IMapper============
+
+É a interface dos mappers, devemos utilizar ela como tipo das referências de mapper que recebemos por meio da injeção de dependências.
+
+============INJEÇÃO DE DEPENDÊNCIA AutoMapper============
+
+Para utilizar a injeção de dependências com o AutoMapper, precisamos da biblioteca AutoMapper específica para isso.
+
+Tendo ela, basta adicionarmos o nosso AutoMapper para os serviços da nossa aplicação com o seguinte método:
+
+    builder.Services.AddAutoMapper(<assemblies>);
+
+Dessa forma injetamos o nosso AutoMapper em todos os lugares que precisam dele em todos os assemblies do nosso projeto.

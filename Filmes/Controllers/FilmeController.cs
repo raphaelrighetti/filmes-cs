@@ -1,4 +1,6 @@
-﻿using Filmes.Models;
+﻿using AutoMapper;
+using Filmes.Data;
+using Filmes.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,16 +10,22 @@ namespace Filmes.Controllers;
 [Route("[controller]")]
 public class FilmeController : ControllerBase
 {
-    private readonly static List<Filme> filmes = new();
-    private static int id = 0;
+    private readonly FilmeContext context;
+    private readonly IMapper mapper;
+
+    public FilmeController(FilmeContext context, IMapper mapper)
+    {
+        this.context = context;
+        this.mapper = mapper;
+    }
 
     [HttpPost]
-    public IActionResult AdicionarFilme([FromBody] Filme filme)
+    public IActionResult AdicionarFilme([FromBody] Filme filmeDTO)
     {
-        id++;
+        var filme = mapper.Map<Filme>(filmeDTO);
 
-        filme.Id = id;
-        filmes.Add(filme);
+        context.Filmes.Add(filme);
+        context.SaveChanges();
 
         return CreatedAtAction(nameof(DetalharFilme), new { id = filme.Id }, filme);
     }
@@ -28,13 +36,13 @@ public class FilmeController : ControllerBase
     {
         if (pagina == 1) pagina = 0;
 
-        return filmes.Skip(quantidade * pagina).Take(quantidade);
+        return context.Filmes.Skip(quantidade * pagina).Take(quantidade);
     }
 
     [HttpGet("{id}")]
     public IActionResult? DetalharFilme(int id)
     {
-        var filme = filmes.FirstOrDefault(filme => filme.Id == id);
+        var filme = context.Filmes.FirstOrDefault(filme => filme.Id == id);
 
         if (filme == null) return NotFound();
 

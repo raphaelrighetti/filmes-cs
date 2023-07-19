@@ -5,6 +5,10 @@ namespace Filmes.Models;
 
 public class Filme
 {
+    public Filme()
+    {
+    }
+
     public Filme(string titulo, string genero, int duracao)
     {
         Titulo = titulo;
@@ -12,16 +16,17 @@ public class Filme
         Duracao = duracao;
     }
 
-    [Range(0, int.MaxValue)]
+    [Key]
+    [Required]
     public int Id { get; set; }
-    [Required(ErrorMessage = "O título do filme é obrigatório!")]
-    [MaxLength(500, ErrorMessage = "O título deve ter no máximo 500 caracteres!")]
+    [Required]
+    [StringLength(500)]
     public string Titulo { get; set; }
-    [Required(ErrorMessage = "O gênero do filme é obrigatório!")]
-    [MaxLength(50, ErrorMessage = "O gênero deve ter no máximo 50 caracteres!")]
+    [Required]
+    [StringLength(50)]
     public string Genero { get; set; }
-    [Required(ErrorMessage = "A duração do filme é obrigatória!")]
-    [Range(70, 600, ErrorMessage = "A duração deve ter entre 70 e 600 minutos!")]
+    [Required]
+    [Range(70, 600)]
     public int Duracao { get; set; }
 
     public override string ToString()

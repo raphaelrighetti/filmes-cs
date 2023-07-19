@@ -37,3 +37,13 @@ Gostei bastante de como os controladores no ASP.NET funcionam, principalmente po
 Nesta aula aprendi o que é uma "action" e criei as minhas primeiras actions que respondem à requisições GET recebendo parâmetros por meio da URL, tanto pelo caminho quanto pela query string, e vi que dá para aplicar as mesmas validações que apliquei no meu modelo "Filme" nesses parâmetros. Também apliquei o conceito de paginação no retorno da lista de filmes utilizando os métodos "Skip()" e "Take()", fazendo uma lógica que calcula o valor passado ao "Skip()" dependendo do número da página que o usuário passar no parâmetro "pagina" da URL.
 
 Além disso, aprendi a padronizar as respostas da API utilizando o IActionResult como retorno (quando necessário) e os métodos do ControllerBase que facilitam na construção dessas respostas. Fazendo essa padronização, garantimos que as respostas das nossas actions sempre tenham o status code correto e todas as características necessárias para as possíveis respostas que iremos devolver.
+
+### Aula 4
+
+#### Persistindo dados com EntityFramework
+
+Nesta aula aprendi a utilizar o EntityFramework para persistir os dados no banco de dados utilizando o "DbContext", "DbSet" e uma biblioteca específica para o MySQL, que é o banco de dados sugerido para utilizarmos no projeto, que facilita a injeção do DbContext de forma correta utilizando o método "UseMySql()" que ela disponibiliza. Fazendo isso, também aprendi como funciona a injeção de dependências no ASP.NET. Utilizei a ferramenta de console do NuGet para gerar uma "Migration" para o meu banco de dados, o que faz com que a gente economize muito tempo que gastaríamos criando esse Migration manualmente.
+
+Além disso, aprendi como funciona a injeção de dependências no ASP.NET, injetando o DbContext que criei no controlador para conseguir utilizá-lo lá.
+
+Também criei um DTO para o cadastro do modelo "Filme", utilizando a biblioteca "AutoMapper" e sua extensão que dá suporta à injeção de dependências para fazer a conversão desse DTO para o modelo.
