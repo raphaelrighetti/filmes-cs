@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("FilmesConnection");
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddDbContext<FilmeContext>(options => options.UseMySql(connectionString,
     ServerVersion.AutoDetect(connectionString)));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -42,8 +42,18 @@ Além disso, aprendi a padronizar as respostas da API utilizando o IActionResult
 
 #### Persistindo dados com EntityFramework
 
-Nesta aula aprendi a utilizar o EntityFramework para persistir os dados no banco de dados utilizando o "DbContext", "DbSet" e uma biblioteca específica para o MySQL, que é o banco de dados sugerido para utilizarmos no projeto, que facilita a injeção do DbContext de forma correta utilizando o método "UseMySql()" que ela disponibiliza. Fazendo isso, também aprendi como funciona a injeção de dependências no ASP.NET. Utilizei a ferramenta de console do NuGet para gerar uma "Migration" para o meu banco de dados, o que faz com que a gente economize muito tempo que gastaríamos criando esse Migration manualmente.
+Nesta aula aprendi a utilizar o EntityFramework para persistir os dados no banco de dados utilizando o "DbContext", "DbSet" e uma biblioteca específica para o MySQL, que facilita a injeção do DbContext de forma correta utilizando o método "UseMySql()" que ela disponibiliza. Fazendo isso, também aprendi como funciona a injeção de dependências no ASP.NET.
 
-Além disso, aprendi como funciona a injeção de dependências no ASP.NET, injetando o DbContext que criei no controlador para conseguir utilizá-lo lá.
+Além disso, utilizei a ferramenta de console do NuGet para gerar uma "Migration" para o meu banco de dados, o que faz com que a gente economize muito tempo que gastaríamos criando essa Migration manualmente.
 
-Também criei um DTO para o cadastro do modelo "Filme", utilizando a biblioteca "AutoMapper" e sua extensão que dá suporta à injeção de dependências para fazer a conversão desse DTO para o modelo.
+Também criei um DTO para o cadastro do modelo "Filme", utilizando a biblioteca "AutoMapper" e sua extensão que dá suporte à injeção de dependências para fazer a conversão desse DTO para o modelo. Já havia utilizado o AutoMapper antes, mas não com a sua extensão de injeção de dependências. Ela facilita muito, pois além de injetar o "IMapper" em todos os recursos que precisamos dele no nosso projeto, também pega todos os "Profile" criados em nosso assembly e gera automaticamente uma configuração aplicando todos eles.
+
+### Aula 5
+
+#### Atualizando e removendo
+
+Nesta aula aprendi a criar ações para os métodos HTTP PUT, PATCH e DELETE, além de ter visto pela primeira vez o PATCH na prática, achei muito interessante.
+
+Utilizei a biblioteca "Microsoft.AspNetCore.Mvc.NewtonsoftJson" para realizar o patch no registro, utilizando a classe "JsonPatchDocument" como parâmetro vindo do corpo da requisição. Tive alguns problemas implementando a action de PATCH, mas no fim descobri que eu estava esquecendo de injetar a dependência do NewtonSoft nos meus controllers.
+
+O mais complicado dessa aula foi justamente fazer a action de PATCH, pois nunca havia feito um método que respondesse a esse método HTTP e tive que pesquisar um pouco sobre o ModelState e outras coisas para entender o que estava acontecendo por baixo dos panos, mas isso foi bom, pois eu entendi um pouco do que acontece por baixo dos panos nas validações feitas nos objetos recebidos por parâmetro nas requisições e percebi que o que eu estava fazendo na action de PATCH era para justamente lançar uma resposta de falha na validação caso o objeto que sofreu o patch não estivesse válido, e é no ModelState que essas informações de validação ficam.

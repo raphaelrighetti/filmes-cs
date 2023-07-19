@@ -196,6 +196,8 @@ Uma coisa que eu não sabia é que podemos criar vários "Profile" que definem v
 
 Ele faz automaticamente o processo de adicionar nossos profiles nas configurações do nosso mapper sem que tenhamos que fazer nada, apenas criar os profiles.
 
+Podemos utilizar o AutoMapper para mapear uma referência para outra já existente, apenas trocando os valores. Fazemos isso utilizando o método "Map()" passando duas referências já existentes.
+
 ============IMapper============
 
 É a interface dos mappers, devemos utilizar ela como tipo das referências de mapper que recebemos por meio da injeção de dependências.
@@ -208,4 +210,73 @@ Tendo ela, basta adicionarmos o nosso AutoMapper para os serviços da nossa apli
 
     builder.Services.AddAutoMapper(<assemblies>);
 
-Dessa forma injetamos o nosso AutoMapper em todos os lugares que precisam dele em todos os assemblies do nosso projeto.
+Dessa forma injetamos o nosso AutoMapper em todos os lugares que precisam dele em todos os assemblies do nosso projeto. Também informamos o local onde estão os profiles passando estes assemblies.
+
+============ATUALIZANDO REGISTRO============
+
+A atualização de registros no EntityFramework funciona de maneira muito parecida com a atualização de registros na JPA, apenas pegamos a referência do registro, atualizamos suas informações e salvamos a mudança no banco de dados (na JPA não precisamos salvar porque ela já faz esse processo por padrão, isso é a única coisa que muda).
+
+Normalmente retornamos uma resposta "no content" em casos de atualização.
+
+============ModelState============
+
+É a propriedade que guarda o estado do nosso modelo e todas as informações de validação, como os erros de validação que são retornados nas respostas HTTP, por exemplo. É uma propriedade de ControllerBase (não sei como ele sabe qual modelo é o certo, mas ele sabe).
+
+Podemos utilizar o "TryValidateModel(<referência>)" para sabermos se um modelo está válido ou não. Esse método retorna um bool que representa se o modelo da referência está válido ou não e consegue essa informação a partir do ModelState.
+
+Existe um método do controller que retorna uma resposta padronizada de falha de validação e recebe o ModelState como parâmetro, que é o "ValidationProblem(ModelState)".
+
+============JsonPatchDocument============
+
+Para utilizarmos essa classe, precisamos injetar a dependência do NewtonSoft nos nossos controllers com o seguinte código:
+
+    builder.Services.AddControllers().AddNewtonsoftJson();
+
+É uma classe da biblioteca NewtonSoft (do próprio ASP.NET Core, não a convencional) que nos dá uma estrutura para receber um JSON padrão em requisições PATCH (atualização parcial).
+
+Ele recebe um JSON com formato do PATCH para ser construído, que consiste em um array de objetos JSON com as seguintes propriedades:
+
+    1. "op": é a operação a ser utilizada no PATCH, pode ser "replace", "add", "remove", etc.
+    2. "path": é o nome do membro a ser alterado, como a propriedade "nome" de um usuário, por exemplo. Sempre deve possuir o prefixo "/" e podemos colocar mais "/" na frente para acessar propriedades dentro de membros, posições em listas e etc. Referência: https://garywoodfine.com/how-to-use-jsonpatch-in-net-core/
+    3. "value": é o valor que você quer passar para aquela ação, seja que ela for, como por exemplo o valor a ser concatenado em uma string no caso de um "add".
+
+Possui o método "ApplyTo(<referência>, <ModelState>)" que aplica esse PATCH para algum objeto e atualiza o ModelState com as informações de se ele está valido e etc.
+
+É muito importante utilizar o "TryValidateModel()" para ver se tudo está nos conformes antes de aplicar qualquer alteração no banco e tal.
+
+Código de exemplo para lembrar o funcionamento:
+
+    [HttpPatch("{id}")]
+    public IActionResult AtualizarFilmeParcialmente(int id, [FromBody] JsonPatchDocument<FilmeAtualizacaoDTO> patch)
+    {
+        var filme = context.Filmes.FirstOrDefault(filme => filme.Id == id);
+        if (filme == null) return NotFound();
+
+        var filmeParaAtualizar = mapper.Map<FilmeAtualizacaoDTO>(filme);
+
+        patch.ApplyTo(filmeParaAtualizar, ModelState);
+
+        if (!TryValidateModel(filmeParaAtualizar))
+        {
+            return ValidationProblem(ModelState);
+        }
+
+        mapper.Map(filmeParaAtualizar, filme);
+        context.SaveChanges();
+
+        return NoContent();
+    }
+
+Exemplo do JSON de um PATCH:
+
+	[
+		{
+			"op": "replace",
+			"path": "/genero",
+			"value": "Comédia"
+		}
+	]
+
+============context.Remove()============
+
+Usamos esse método para remover um objeto persistido no nosso banco de dados. Não podemos esquecer do "SaveChanges()"!
