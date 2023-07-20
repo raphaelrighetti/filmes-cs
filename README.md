@@ -57,3 +57,21 @@ Nesta aula aprendi a criar ações para os métodos HTTP PUT, PATCH e DELETE, al
 Utilizei a biblioteca "Microsoft.AspNetCore.Mvc.NewtonsoftJson" para realizar o patch no registro, utilizando a classe "JsonPatchDocument" como parâmetro vindo do corpo da requisição. Tive alguns problemas implementando a action de PATCH, mas no fim descobri que eu estava esquecendo de injetar a dependência do NewtonSoft nos meus controllers.
 
 O mais complicado dessa aula foi justamente fazer a action de PATCH, pois nunca havia feito um método que respondesse a esse método HTTP e tive que pesquisar um pouco sobre o ModelState e outras coisas para entender o que estava acontecendo por baixo dos panos, mas isso foi bom, pois eu entendi um pouco do que acontece por baixo dos panos nas validações feitas nos objetos recebidos por parâmetro nas requisições e percebi que o que eu estava fazendo na action de PATCH era para justamente lançar uma resposta de falha na validação caso o objeto que sofreu o patch não estivesse válido, e é no ModelState que essas informações de validação ficam.
+
+### Aula 6
+
+#### Documentando a API
+
+Nesta aula aprendi a manipular a documentação Swagger da API gerada automaticamente pelo SwaggerGen da biblioteca Swashbuckle, utilizando os summaries e o arquivo XML de documentação do nosso projeto para descrever melhor os métodos dos endpoints e etc.
+
+Além disso, vi que é possível criar strings de caminhos relativos utilizando algumas classes do .NET, o que facilita bastante.
+
+### Conclusão
+
+Apesar de ser um curso mais básico e que ensina a fazer coisas que eu já sei fazer com outras tecnologias, foi um curso muito interessante e com muito conteúdo bom.
+
+Nele pude aprender a fazer uma API REST com um CRUD completo de filmes utilizando o ASP.NET Core e aplicando diversos conceitos, como paginação de listas retornadas, atualização parcial de um objeto aplicando um PATCH, padronização de respostas da API com o tipo IActionResult e etc.
+
+Além disso, aprendi a conectar a API com um banco de dados utilizando o EntityFramework, o ORM mais utilizado na plataforma .NET e que facilita bastante no tráfego de dados entre o banco e a API, fazendo parecer que estamos manipulando uma coleção e não fazendo requisições a um banco de dados. Criei uma Migration utilizando a ferramenta de console do NuGet e comandos do "Tools" do EntityFramework, o que economizou muito do tempo que eu gastaria escrevendo essa classe de migration do zero, coisa que meio que temos que fazer utilizando uma ferramenta de migrations como o Flyway que utilizei junto com o Spring, onde temos que escrever o código SQL da migration que queremos fazer do zero, ou utilizando alguma ferramenta que foge do escopo do Flyway.
+
+Enfim, gostei bastante do curso, assim como do ASP.NET.

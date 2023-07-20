@@ -280,3 +280,31 @@ Exemplo do JSON de um PATCH:
 ============context.Remove()============
 
 Usamos esse método para remover um objeto persistido no nosso banco de dados. Não podemos esquecer do "SaveChanges()"!
+
+============[ProducesResponseType]============
+
+É uma anotação que especifica o tipo de resposta HTTP que aquela action produz.
+
+Essa anotação é utilizada pelo gerador de documentação do Swagger para definir melhor as especificações do método.
+
+============builder.Services.AddSwaggerGen()============
+
+Conseguimos passar uma expressão lambda para esse método, onde conseguimos configurar diversas coisas na nossa documentação gerada automaticamente.
+
+Referência:
+
+https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-7.0&tabs=visual-studio
+
+Esse método e outras coisas relacionadas ao Swagger vem com a biblioteca Swashbuckle.
+
+============IncludeXmlComments(<caminho>)============
+
+Esse método faz com que a documentação Swagger da API gerada automaticamente leia os comentários do XML da documentação gerada do nosso projeto e utilize as infromações que estão lá na documentação da API.
+
+Para conseguirmos ter o caminho do XML da documentação sem termos que passar ele inteiro, podemos utilizar o seguinte código:
+
+    var xmlFile =
+        $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+Dessa forma pegamos o caminho certo sempre relativamente, sem termos que escrevê-lo na mão. O importante é lembrar o que está acontecendo aí, pois não irei lembrar essas classes do namespace Reflection e etc.
