@@ -81,3 +81,11 @@ Enfim, gostei bastante do curso, assim como do ASP.NET.
 Neste curso irei continuar o desenvolvimento da minha API Filmes, adicionando novos modelos, como cinemas, sessões e etc.
 
 Além de evoluir o projeto, irei aprender mais sobre o EntityFramework, relacionando entidades e deixando o sistema mais robusto.
+
+### Aula 1
+
+#### Revisando e entendendo o problema
+
+Nesta aula adicionei um novo modelo ao sistema, o modelo "Cinema", também criando um controlador para esse modelo e um novo Profile do AutoMapper para as conversões dos DTOs desse modelo. Essas foram coisas que eu já havia feito no curso anterior, mas que resolvi fazer sem usar nenhuma colinha para praticar as coisas que eu aprendi.
+
+Além disso, foi apresentado o problema que iremos resolver relacionando as entidades, que é a necessidade de um cinema precisar ter um endereço físico que, por sua vez, pode conter outras entidades dentro dele e por aí vai, assim criando-se a necessidade de fazermos relacionamentos entre as nossas entidades, coisa que o EntityFramework facilita para nós.

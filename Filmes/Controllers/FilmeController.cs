@@ -12,10 +12,10 @@ namespace Filmes.Controllers;
 [Route("[controller]")]
 public class FilmeController : ControllerBase
 {
-    private readonly FilmeContext context;
+    private readonly FilmesContext context;
     private readonly IMapper mapper;
 
-    public FilmeController(FilmeContext context, IMapper mapper)
+    public FilmeController(FilmesContext context, IMapper mapper)
     {
         this.context = context;
         this.mapper = mapper;

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Filmes.Migrations;
 
-[DbContext(typeof(FilmeContext))]
+[DbContext(typeof(FilmesContext))]
 partial class FilmeContextModelSnapshot : ModelSnapshot
 {
     protected override void BuildModel(ModelBuilder modelBuilder)
