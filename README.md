@@ -75,3 +75,9 @@ Nele pude aprender a fazer uma API REST com um CRUD completo de filmes utilizand
 Além disso, aprendi a conectar a API com um banco de dados utilizando o EntityFramework, o ORM mais utilizado na plataforma .NET e que facilita bastante no tráfego de dados entre o banco e a API, fazendo parecer que estamos manipulando uma coleção e não fazendo requisições a um banco de dados. Criei uma Migration utilizando a ferramenta de console do NuGet e comandos do "Tools" do EntityFramework, o que economizou muito do tempo que eu gastaria escrevendo essa classe de migration do zero, coisa que meio que temos que fazer utilizando uma ferramenta de migrations como o Flyway que utilizei junto com o Spring, onde temos que escrever o código SQL da migration que queremos fazer do zero, ou utilizando alguma ferramenta que foge do escopo do Flyway.
 
 Enfim, gostei bastante do curso, assim como do ASP.NET.
+
+## .NET 6: relacionando entidades
+
+Neste curso irei continuar o desenvolvimento da minha API Filmes, adicionando novos modelos, como cinemas, sessões e etc.
+
+Além de evoluir o projeto, irei aprender mais sobre o EntityFramework, relacionando entidades e deixando o sistema mais robusto.
